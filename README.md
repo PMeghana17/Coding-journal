@@ -4,7 +4,8 @@ Welcome to my daily coding journey! This repository is a collection of all my co
 
 ## How It Works
 
-- Every day, I add a new folder with the date, containing:
-  - Code solutions in different languages (Java, Python, etc.)
+- Every day, I add a new folder
+  - Code solutions in Java
   - Notes about what I learned or found challenging
   - Links to resources I found helpful
+  - And my daily wrap up
