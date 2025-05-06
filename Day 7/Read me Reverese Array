@@ -1,0 +1,267 @@
+Given an array arr[], the task is to reverse the array. 
+Reversing an array means rearranging the elements such that the first element becomes the last, the second element becomes second last and so on.
+
+Examples:
+
+Input: arr[] = {1, 4, 3, 2, 6, 5}
+Output: {5, 6, 2, 3, 4, 1}
+Explanation: The first element 1 moves to last position, the second element 4 moves to second-last and so on.
+
+Input: arr[] = {4, 5, 1, 2}
+Output: {2, 1, 5, 4}
+Explanation: The first element 4 moves to last position, the second element 5 moves to second last and so on.
+
+Table of Content
+
+[Naive Approach] Using a temporary array - O(n) Time and O(n) Space
+[Expected Approach - 1] Using Two Pointers - O(n) Time and O(1) Space
+[Expected Approach - 2] By Swapping Elements - O(n) Time and O(1) Space
+[Alternate Approach] Using Recursion - O(n) Time and O(n) Space
+Using Inbuilt Methods - O(n) Time and O(1) Space
+
+
+---------->[Naive Approach] Using a temporary array - O(n) Time and O(n) Space
+The idea is to use a temporary array to store the reverse of the array.
+
+Create a temporary array of same size as the original array.
+Now, copy all elements from original array to the temporary array in reverse order.
+Finally, copy all the elements from temporary array back to the original array.
+Working:
+
+
+
+
+Below is the implementation of the algorithm:
+
+
+
+
+// Java Program to reverse an array using temporary array
+
+import java.util.Arrays;
+
+class GfG {
+    
+    // function to reverse an array
+    static void reverseArray(int[] arr) {
+        int n = arr.length;
+        
+        // Temporary array to store elements in reversed order
+        int[] temp = new int[n];
+  
+        // Copy elements from original array to temp in reverse order
+        for (int i = 0; i < n; i++)
+            temp[i] = arr[n - i - 1];
+  
+        // Copy elements back to original array
+        for (int i = 0; i < n; i++)
+            arr[i] = temp[i];
+    }
+
+    public static void main(String[] args) {
+        int[] arr = { 1, 4, 3, 2, 6, 5 };
+
+        reverseArray(arr);
+  
+        for (int i = 0; i < arr.length; i++) 
+            System.out.print(arr[i] + " ");
+    }
+}
+
+Output
+5 6 2 3 4 1 
+Time Complexity: O(n), Copying elements to a new array is a linear operation.
+Auxiliary Space: O(n), as we are using an extra array to store the reversed array.
+
+
+
+---------->[Expected Approach - 1] Using Two Pointers - O(n) Time and O(1) Space
+The idea is to maintain two pointers: left and right, such that left points at the beginning of the array and right points to the end of the array.
+
+While left pointer is less than the right pointer, swap the elements at these two positions. After each swap, increment the left pointer and decrement the right pointer to move towards the center of array. This will swap all the elements in the first half with their corresponding element in the second half.
+
+Working:
+
+
+
+
+Below is the implementation of the algorithm:
+
+
+
+
+// Java Program to reverse an array using Two Pointers
+
+import java.util.Arrays;
+
+class GfG {
+    
+    // function to reverse an array
+    static void reverseArray(int[] arr) {
+        
+        // Initialize left to the beginning and right to the end
+        int left = 0, right = arr.length - 1;
+
+        // Iterate till left is less than right
+        while (left < right) {
+            
+            // Swap the elements at left and right position
+            int temp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = temp;
+
+            // Increment the left pointer
+            left++;
+
+            // Decrement the right pointer
+            right--;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = { 1, 4, 3, 2, 6, 5 };
+
+        reverseArray(arr);
+
+        for (int i = 0; i < arr.length; i++) 
+            System.out.print(arr[i] + " ");
+    }
+}
+
+
+Output
+5 6 2 3 4 1 
+Time Complexity: O(n), as we are visiting each element exactly once.
+Auxiliary Space: O(1)
+
+
+
+------------>[Expected Approach - 2] By Swapping Elements - O(n) Time and O(1) Space
+The idea is to iterate over the first half of the array and swap each element with its corresponding element from the end. So, while iterating over the first half, any element at index i is swapped with the element at index (n - i - 1).
+
+Working:
+
+
+
+Below is the implementation of the algorithm:
+
+
+
+
+// Java Program to reverse an array by swapping elements
+
+import java.util.Arrays;
+
+class GfG {
+    
+    // function to reverse an array
+    static void reverseArray(int[] arr) {
+        int n = arr.length;
+        
+        // Iterate over the first half and for every index i,
+        // swap arr[i] with arr[n - i - 1]
+        for (int i = 0; i < n / 2; i++) {
+            int temp = arr[i];
+            arr[i] = arr[n - i - 1];
+            arr[n - i - 1] = temp;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = { 1, 4, 3, 2, 6, 5 };
+
+        reverseArray(arr);
+  
+        for (int i = 0; i < arr.length; i++) 
+            System.out.print(arr[i] + " ");
+    }
+}
+
+Output
+5 6 2 3 4 1 
+Time Complexity: O(n), the loop runs through half of the array, so it's linear with respect to the array size.
+Auxiliary Space: O(1), no extra space is required, therefore we are reversing the array in-place.
+
+
+
+---------->[Alternate Approach] Using Recursion - O(n) Time and O(n) Space
+The idea is to use recursion and define a recursive function that takes a range of array elements as input and reverses it. Inside the recursive function,
+
+Swap the first and last element.
+Recursively call the function with the remaining subarray.
+
+
+
+// Java Program to reverse an array using Recursion
+
+import java.util.Arrays;
+
+class GfG {
+    
+    // recursive function to reverse an array from l to r
+    static void reverseArrayRec(int[] arr, int l, int r) {
+        if (l >= r)
+            return;
+  
+        // Swap the elements at the ends
+        int temp = arr[l];
+        arr[l] = arr[r];
+        arr[r] = temp;
+  
+        // Recur for the remaining array
+        reverseArrayRec(arr, l + 1, r - 1);
+    }
+
+    // function to reverse an array
+    static void reverseArray(int[] arr) {
+        int n = arr.length;
+        reverseArrayRec(arr, 0, n - 1);
+    }
+
+    public static void main(String[] args) {
+        int[] arr = { 1, 4, 3, 2, 6, 5 };
+
+        reverseArray(arr);
+  
+        for (int i = 0; i < arr.length; i++) 
+            System.out.print(arr[i] + " ");
+    }
+}
+
+Output
+5 6 2 3 4 1 
+Time Complexity: O(n), the recurrence relation will be T(n) = T(n - 2) + O(1), which can be simplified to O(n).
+Auxiliary Space: O(n), as we are using recursion stack.
+
+---------->Using Inbuilt Methods - O(n) Time and O(1) Space
+The idea is to use inbuilt reverse methods available across different languages.
+
+
+
+
+// Java Program to reverse an array using inbuilt methods
+
+import java.util.*;
+
+class GfG {
+    
+    // function to reverse an array
+    static void reverseArray(List<Integer> arr) {
+        Collections.reverse(arr);
+    }
+
+    public static void main(String[] args) {
+        List<Integer> arr = 
+          new ArrayList<>(Arrays.asList(1, 4, 3, 2, 6, 5));
+
+        reverseArray(arr);
+  
+        for (int i = 0; i < arr.size(); i++) 
+            System.out.print(arr.get(i) + " ");
+    }
+}
+
+Output
+5 6 2 3 4 1 
+Time Complexity: O(n), the reverse method has linear time complexity.
+Auxiliary Space: O(1) Additional space is not used to store the reversed array, as the in-built array method swaps the values in-place.
