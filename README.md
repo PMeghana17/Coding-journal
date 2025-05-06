@@ -14,5 +14,5 @@ Welcome to my daily coding journey! This repository is a collection of all my co
 
 Also Started following GFG 160 days course
 -Daily solving 1 problem from that course.
--Readme contains the exact solutions (Naive,Better and Optimal) but .java files contains my codes.
--
+-Readme contains the exact solutions (Naive,Better and Optimal) 
+-But .java files contains my codes.
