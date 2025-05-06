@@ -11,3 +11,8 @@ Welcome to my daily coding journey! This repository is a collection of all my co
   - And my daily wrap up
  
 // Following DSA Strivers A2Z Sheet
+
+Also Started following GFG 160 days course
+-Daily solving 1 problem from that course.
+-Readme contains the exact solutions (Naive,Better and Optimal) but .java files contains my codes.
+-
