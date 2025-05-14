@@ -27,3 +27,37 @@ class Solution {
         return ans;
     }
 }
+
+
+------------->Points
+    Maybe i can initially should have sorted the nums array and then simply created hashmap ....but sorting the array 
+    Will take O(NlogN) TC
+
+
+    
+------------------------
+✅ Time Complexity:
+1. Inserting into TreeMap:
+Each insertion: O(log k) where k is the number of unique elements.
+
+For nums.length = m, worst case all elements are unique → O(m log m).
+
+2. Iterating over map entries:
+O(k), where k is the number of unique elements (at most m).
+
+➡️ Total Time Complexity: O(m log m)
+
+------------------------------------
+
+✅ Space Complexity:
+TreeMap: stores up to m entries → O(m) in worst case (all unique).
+
+ans list: stores up to 2 elements (max possible with >n/3 condition).
+
+➡️ Total Space Complexity: O(m)
+
+
+
+
+--------the optimized Boyer-Moore Voting Algorithm solution 
+    O(n) time and O(1) space------in readme
