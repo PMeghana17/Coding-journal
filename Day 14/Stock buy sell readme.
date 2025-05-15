@@ -1,0 +1,266 @@
+Given an array prices[] of size n denoting the cost of stock on each day, 
+the task is to find the maximum total profit if we can buy and sell the stocks any number of times.
+
+Note: We can only sell a stock which we have bought earlier and we cannot hold multiple stocks on any day.
+
+Examples:
+
+Input: prices[] = {100, 180, 260, 310, 40, 535, 695}
+Output: 865
+Explanation: Buy the stock on day 0 and sell it on day 3 => 310 - 100 = 210
+                       Buy the stock on day 4 and sell it on day 6 => 695 - 40 = 655
+                       Maximum Profit  = 210 + 655 = 865
+
+Maximize-Profit--Graph
+Input: prices[] = {4, 2, 2, 2, 4}
+Output: 2
+Explanation: Buy the stock on day 3 and sell it on day 4 => 4 - 2 = 2
+                       Maximum Profit  = 2
+
+Table of Content
+
+[Naive Approach] Using Recursion - Exponential Time
+[Better Approach] Local Minima and Maxima - O(n) Time and O(1) Space
+[Expected Approach] Accumulate Profit - O(n) Time and O(1) Space
+[Naive Approach] Using Recursion - Exponential Time
+We consider every valid pair (A pair of indexes i and j such that price[i] < price[j] and j > i),
+we get the profit of the pair as (price[j] - price[i]) and add recursively compute profits for i-1 and j+1. 
+Finally we return the maximum of all profits obtained by all valid pairs.
+
+
+
+
+1
+import java.util.Arrays;
+2
+​
+3
+class GfG {
+4
+  
+5
+    // Function to find the maximum profit
+6
+    static int maxProfitRec(int[] price, int start, int end) {
+7
+        int res = 0;
+8
+​
+9
+        // Consider every valid pair, find the profit with it
+10
+        // and recursively find profits on left and right of it
+11
+        for (int i = start; i < end; i++) {
+12
+            for (int j = i + 1; j <= end; j++) {
+13
+                if (price[j] > price[i]) {
+14
+                    int curr = (price[j] - price[i]) + 
+15
+                                maxProfitRec(price, start, i - 1) + 
+16
+                                maxProfitRec(price, j + 1, end);
+17
+                    res = Math.max(res, curr);
+18
+                }
+19
+            }
+20
+        }
+21
+        return res;
+22
+    }
+23
+​
+24
+    // Wrapper function
+25
+    static int maximumProfit(int[] prices) {
+26
+        return maxProfitRec(prices, 0, prices.length - 1);
+27
+    }
+28
+​
+29
+    public static void main(String[] args) {
+30
+        int[] prices = {100, 180, 260, 310, 40, 535, 695};
+31
+        System.out.println(maximumProfit(prices));
+32
+    }
+33
+}
+
+Output
+865
+[Better Approach] Local Minima and Maxima - O(n) Time and O(1) Space
+When the prices are going down, we do not do anything and let the prices go down. 
+When the prices reach a local minimum value (a value after which the prices go up), we buy the stock.
+When the prices are going up, we let the prices go up and once the prices reach a local maxima, we sell the stock.
+
+The idea is to traverse the array from left to right and do following.
+
+Find local minima and then a local maxima.
+Compute the difference between two and add to the result.
+Working:
+
+Maximize-Profit-using-Local-Minima-and-Maxima-2.webpMaximize-Profit-using-Local-Minima-and-Maxima-2.webp
+
+
+Below is the implementation of the algorithm
+
+
+
+
+1
+class GfG {
+2
+  
+3
+    // Function to calculate the maximum profit
+4
+    static int maximumProfit(int[] prices) {
+5
+        int n = prices.length;
+6
+        int lMin = prices[0];  // Local Minima
+7
+        int lMax = prices[0];  // Local Maxima
+8
+        int res = 0;
+9
+​
+10
+        int i = 0;
+11
+        while (i < n - 1) {
+12
+          
+13
+            // Find local minima
+14
+            while (i < n - 1 && prices[i] >= prices[i + 1]) { i++; }
+15
+            lMin = prices[i];
+16
+           
+17
+            // Local Maxima
+18
+            while (i < n - 1 && prices[i] <= prices[i + 1]) { i++; }
+19
+            lMax = prices[i];
+20
+          
+21
+            // Add current profit
+22
+            res += (lMax - lMin);
+23
+        }
+24
+      
+25
+        return res;
+26
+    }
+27
+​
+28
+    public static void main(String[] args) {
+29
+        int[] prices = {100, 180, 260, 310, 40, 535, 695};
+30
+        System.out.println(maximumProfit(prices));
+31
+    }
+32
+}
+
+Output
+865
+Time Complexity: O(n)
+Auxiliary Space: O(1)
+
+[Expected Approach] Accumulate Profit - O(n) Time and O(1) Space
+This is mainly an optimization over the previous solution. Instead of selling at local maxima, 
+we keep selling while the prices are going up. This way we accumulate the same profit and 
+avoid some condition checks required for computing local minima and maxima.
+
+Traverse price[] from i = 1 to price.size() - 1
+
+res = 0
+if price[i] > price[i - 1]
+res = res + price[i] - price[i - 1]
+Maximize-Profit-by-Accumulating-Profit-1.webpMaximize-Profit-by-Accumulating-Profit-1.webp
+
+
+Below is the implementation of the algorithm:
+
+
+
+
+1
+// Java Program to find the max profit when multiple
+2
+// transactions are allowed
+3
+​
+4
+import java.util.Arrays;
+5
+​
+6
+class GfG {
+7
+    
+8
+    static int maximumProfit(int[] prices) {
+9
+        int res = 0;
+10
+​
+11
+        // Keep on adding the difference between
+12
+        // adjacent when the prices a
+13
+        for (int i = 1; i < prices.length; i++) {
+14
+            if (prices[i] > prices[i - 1]) 
+15
+                res += prices[i] - prices[i - 1];
+16
+        }
+17
+        
+18
+        return res;
+19
+    }
+20
+​
+21
+    public static void main(String[] args) {
+22
+        int[] prices = { 100, 180, 260, 310, 40, 535, 695 };
+23
+        System.out.println(maximumProfit(prices));
+24
+    }
+25
+}
+
+Output
+865
+Time Complexity: O(n)
+Auxiliary Space: O(1)
+
+Please refer Stock Buy and Sell Complete Tutorial for complete list
+https://www.geeksforgeeks.org/all-variations-of-stock-problems/
