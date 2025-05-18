@@ -2,7 +2,7 @@
 
 Welcome to my daily coding journey!  
 This repository is a collection of all my coding practice, solutions, and learnings — starting from **Day 1**.
-
+ 
 ---
 
 ## 🚀 How It Works
