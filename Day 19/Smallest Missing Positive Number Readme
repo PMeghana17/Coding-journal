@@ -1,0 +1,305 @@
+Find Smallest Missing Positive Number
+Given an unsorted array arr[] with both positive and negative elements, the task is to find the smallest positive number missing from the array.
+
+Note: You can modify the original array.
+
+Examples:
+
+Input: arr[] = {2, -3, 4, 1, 1, 7}
+Output: 3
+Explanation: 3 is the smallest positive number missing from the array.
+
+Input: arr[] = {5, 3, 2, 5, 1}
+Output: 4
+Explanation: 4 is the smallest positive number missing from the array.
+
+Input: arr[] = {-8, 0, -1, -4, -3}
+Output: 1
+Explanation: 1 is the smallest positive number missing from the array.
+
+Table of Content
+
+[Naive approach] By Sorting - O(n*log n) Time and O(n) Space
+[Better approach] Using Visited Array - O(n) Time and O(n) Space
+[Expected Approach] Using Cycle Sort - O(n) Time and O(1) Space
+[Alternate Approach] By Negating Array Elements – O(n) Time and O(1) Space
+[Alternate Approach] By Marking Indices – O(n) Time and O(1) Space
+[Naive approach] By Sorting - O(n*log n) Time and O(n) Space
+The idea is to sort the array and assume the missing number as 1. Now, iterate over the array and for each element arr[i],
+
+If arr[i] == missing number, then increment missing number by 1.
+If arr[i] < missing number, then continue to search for the missing number.
+If arr[i] > missing number, then break and return the missing number
+
+
+
+1
+// Java program to find the first positive missing number 
+2
+// using Sorting
+3
+import java.util.Arrays;
+4
+class GfG {
+5
+    
+6
+    // Function to find the first positive missing number
+7
+    static int missingNumber(int[] arr) {
+8
+        Arrays.sort(arr);
+9
+​
+10
+        // res will hold the current smallest missing number,
+11
+        // initially set to 1
+12
+        int res = 1;
+13
+        for (int i = 0; i < arr.length; i++) {
+14
+​
+15
+            // If we have found 'res' in the array,
+16
+            // 'res' is no longer missing, so increment it
+17
+            if (arr[i] == res) {
+18
+                res++;
+19
+            }
+20
+​
+21
+            // If the current element is larger than 'res',
+22
+            // 'res' cannot be found in the array,
+23
+            // so it is our final answer
+24
+            else if (arr[i] > res) {
+25
+                break;
+26
+            }
+27
+        }
+28
+        return res;
+29
+    }
+30
+​
+31
+    public static void main(String[] args) {
+32
+        int[] arr = {2, -3, 4, 1, 1, 7};
+33
+        System.out.println(missingNumber(arr));
+34
+    }
+35
+}
+
+Output
+3
+[Better approach] Using Visited Array - O(n) Time and O(n) Space
+The idea is to create a visited array, to keep track of which numbers from the original array were present.
+For each positive number in the input array, we mark its corresponding position in the visited array.
+After that, we go through the visited array to find the first position that isn’t visited. The first unvisited index tells us the first missing positive number.
+Note that we are marking numbers within the range from 1 to n only.
+
+
+
+
+1
+// Java program to find the first missing positive number 
+2
+// using visited array
+3
+​
+4
+import java.util.Arrays;
+5
+​
+6
+class GfG {
+7
+    static int missingNumber(int[] arr) {
+8
+        int n = arr.length;
+9
+​
+10
+        // To mark the occurrence of elements
+11
+        boolean[] vis = new boolean[n];
+12
+        for (int i = 0; i < n; i++) {
+13
+​
+14
+            // if element is in range from 1 to n
+15
+            // then mark it as visited
+16
+            if (arr[i] > 0 && arr[i] <= n)
+17
+                vis[arr[i] - 1] = true;
+18
+        }
+19
+​
+20
+        // Find the first element which is unvisited
+21
+        // in the original array
+22
+        for (int i = 1; i <= n; i++) {
+23
+            if (!vis[i - 1]) {
+24
+                return i;
+25
+            }
+26
+        }
+27
+​
+28
+        // if all elements from 1 to n are visited
+29
+        // then n+1 will be first positive missing number
+30
+        return n + 1;
+31
+    }
+32
+​
+33
+    public static void main(String[] args) {
+34
+        int[] arr = {2, -3, 4, 1, 1, 7};
+35
+        System.out.println(missingNumber(arr));
+36
+    }
+37
+}
+
+Output
+3
+[Expected Approach] Using Cycle Sort - O(n) Time and O(1) Space
+The idea is similar to Cycle Sort and move each element in the array to its correct position based on its value. 
+So for each number, say x, such that 1 <= x <= n, is placed at the (x - 1)th index.
+
+Finally, iterate through the array and check if the numbers are in the expected indexes or not. 
+The first place where the number doesn’t match its index gives us the first missing positive number.
+If all the numbers from 1 to n, are at their correct indexes, then the next number i.e., n + 1, is the smallest missing positive number.
+
+Find-Smallest-Missing-Positive-Number-using-Cycle-Sort-1.webpFind-Smallest-Missing-Positive-Number-using-Cycle-Sort-1.webp
+
+
+
+
+
+
+1
+// Java program to find the first missing positive number 
+2
+// using cycle sort
+3
+import java.util.*;
+4
+class GfG {
+5
+​
+6
+    // Function for finding the first missing positive number
+7
+    static int missingNumber(int[] arr) {
+8
+        int n = arr.length;
+9
+        for (int i = 0; i < n; i++) {
+10
+​
+11
+            // if arr[i] is within the range [1, n] and arr[i]
+12
+            // is not placed at (arr[i]-1)th index in arr
+13
+            while (arr[i] >= 1 && arr[i] <= n
+14
+                   && arr[i] != arr[arr[i] - 1]) {
+15
+​
+16
+                // then swap arr[i] and arr[arr[i]-1] to
+17
+                // place arr[i] to its corresponding index
+18
+                int temp = arr[i];
+19
+                arr[i] = arr[arr[i] - 1];
+20
+                arr[temp - 1] = temp;
+21
+            }
+22
+        }
+23
+​
+24
+        // If any number is not at its corresponding index 
+25
+        // then it is the missing number
+26
+        for (int i = 1; i <= n; i++) {
+27
+            if (i != arr[i - 1]) {
+28
+                return i;
+29
+            }
+30
+        }
+31
+​
+32
+        // If all number from 1 to n are present then n+1 
+33
+        // is smallest missing number
+34
+        return n + 1;
+35
+    }
+36
+​
+37
+    public static void main(String[] args) {
+38
+        int[] arr = {2, -3, 4, 1, 1, 7};
+39
+        System.out.println(missingNumber(arr));
+40
+    }
+41
+}
+
+Output
+3
+[Alternate Approach] By Negating Array Elements – O(n) Time and O(1) Space
+The idea is to first move all positive integers to the left side of the array.
+Then, we iterate over this left segment and mark the occurrences of each number x by negating the value at index (x - 1).
+Lastly, iterate over the left segment again and find the missing number by searching for the first unmarked element in it.
+
+To know more about the implementation, please refer to Find Smallest Missing Positive Number by Negating Elements.
+
+[Alternate Approach] By Marking Indices – O(n) Time and O(1) Space
+The idea is to first check if 1 is present in the array or not. If not, the answer is 1.
+Otherwise, replace all the numbers outside the range [1, n] to 1. Then, iterate over the array again and mark the occurrences of each number,
+say x by adding n to index x - 1. Lastly, iterate over the array again to find the missing element by searching for the first unmarked index.
