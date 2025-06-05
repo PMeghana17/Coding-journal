@@ -15,16 +15,16 @@ class Solution {
         int i=maxlen-1;
         int c=0;
         StringBuilder res=new StringBuilder();
-        char[] s11=s1.toCharArray();
-        char[] s22=s2.toCharArray();
+        //char[] s11=s1.toCharArray();
+        //char[] s22=s2.toCharArray();
         
        // System.out.println(java.util.Arrays.toString(s11));
        // System.out.println(java.util.Arrays.toString(s22));
         
         while(i>=0)
         {
-            int c1=s11[i]-'0';
-            int c2=s22[i]-'0';
+            int c1=s1.charAt(i)-'0';
+            int c2=s2.charAt(i)-'0';
             int sum=c1+c2+c;
             
             res.append(sum%2);
