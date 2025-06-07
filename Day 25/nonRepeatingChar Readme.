@@ -1,0 +1,151 @@
+First non-repeating character of given string
+Given a string s of lowercase English letters, the task is to find the first non-repeating character.
+If there is no such character, return '$'.
+
+Examples: 
+
+Input: s = "geeksforgeeks"
+Output: 'f'
+Explanation: 'f' is the first character in the string which does not repeat.
+
+Input: s = "racecar"
+Output: 'e'
+Explanation: 'e' is the only character in the string which does not repeat.
+
+Input: "aabbccc"
+Output: '$'
+Explanation: All the characters in the given string are repeating.
+
+Table of Content
+
+[Naive Approach] Using Nested Loop – O(n^2) Time and O(1) Space
+[Efficient Approach 1] Using Frequency Array (Two Traversal) – O(2*n) Time and O(MAX_CHAR ) Space
+[Efficient Approach 2] By Storing Indices (Single Traversal) – O(n) Time and O(MAX_CHAR ) Space
+[Naive Approach] Using Nested Loop – O(n^2) Time and O(1) Space
+The idea is to use two nested loops, the outer loop for picking an element and the inner loop for finding another occurrence of 
+the picked character in the string. As soon as we find a character which has only one occurrence in the input string, return it. 
+If all characters have multiple occurrences, return '$'.
+
+
+
+
+public class GFG {
+    public static char nonRep(String s) {
+        int n = s.length();
+        for (int i = 0; i < n; ++i) {
+            boolean found = false;
+​
+            for (int j = 0; j < n; ++j) {
+                if (i != j && s.charAt(i) == s.charAt(j)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) 
+                return s.charAt(i);
+        }
+​
+        return '$';
+    }
+​
+    public static void main(String[] args) {
+        String s = "racecar";
+        System.out.println(nonRep(s));
+    }
+}
+
+Output
+e
+[Efficient Approach 1] Using Frequency Array (Two Traversal) – O(2*n) Time and O(MAX_CHAR ) Space
+The efficient approach is to either use an array of size MAX_CHAR  to store the frequencies of each character.
+  Traverse the input string twice:
+
+First traversal is to count the frequency of each character.
+Second traversal to find the first character in string with a frequency of one.
+
+
+
+import java.util.*;
+​
+public class GFG {
+    private static final int MAX_CHAR = 26;  
+​
+    public static char nonRep(String s) {
+        int[] freq = new int[MAX_CHAR];
+​
+        for (char c : s.toCharArray()) {
+            freq[c - 'a']++;
+        }
+​
+        // Find the first character with frequency 1
+        for (char c : s.toCharArray()) {
+            if (freq[c - 'a'] == 1) {
+                return c;
+            }
+        }
+        return '$';
+    }
+​
+    public static void main(String[] args) {
+        String s = "geeksforgeeks";
+        System.out.println(nonRep(s));
+    }
+}
+
+Output
+f
+[Efficient Approach 2] By Storing Indices (Single Traversal) – O(n) Time and O(MAX_CHAR ) Space
+The above approach can be optimized using a single traversal of the string. The idea is to maintain a visited array of size MAX_CHAR initialized to -1, indicating no characters have been seen yet. Now, we iterate through the string:
+
+If a character is seen for the first time, its index is stored in the array.
+If the character is found again then its array value is set to -2 to represent this character is now repeating.
+After the string traversal, traverse the visited array and check if value in the array is not equal to -1 or -2 (means, this character is not repeating). We then find the smallest positive index from these values to find the first non-repeating character. If no such index is found, return '$'.
+
+first-non-repeating-character-1.webpfirst-non-repeating-character-1.webp
+
+
+
+
+
+import java.util.*;
+​
+public class Main {
+    static final int MAX_CHAR = 26;
+​
+    public static char nonRep(String s) {
+        int[] vis = new int[MAX_CHAR];
+        Arrays.fill(vis, -1);
+​
+        for (int i = 0; i < s.length(); i++) {
+            int index = s.charAt(i) - 'a';
+            if (vis[index] == -1) {
+                
+                  // Store the index when character is first seen
+                vis[index] = i;
+            } else {
+                
+                // Mark character as repeated
+                vis[index] = -2;  
+            }
+        }
+​
+        int idx = -1;
+​
+        // Find the smallest index of the non-repeating characters
+        for (int i = 0; i < MAX_CHAR; i++) {
+            if (vis[i] >= 0 && (idx == -1 || vis[i] < vis[idx])) {
+                idx = i;
+            }
+        }
+​
+        return (idx == -1) ? '$' : s.charAt(vis[idx]);
+    }
+​
+    public static void main(String[] args) {
+        String s = "aabbccc";
+        System.out.println(nonRep(s));
+    }
+}
+
+Output
+$
