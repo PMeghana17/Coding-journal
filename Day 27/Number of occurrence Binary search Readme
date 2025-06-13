@@ -1,0 +1,118 @@
+Count number of occurrences (or frequency) in a sorted array
+Given a sorted array arr[] and an integer target, the task is to find the number of occurrences of target in given array.
+
+Examples:
+
+Input: arr[] = [1, 1, 2, 2, 2, 2, 3], target = 2
+Output: 4
+Explanation: 2 occurs 4 times in the given array.
+
+Input: arr[] = [1, 1, 2, 2, 2, 2, 3], target = 4
+Output: 0
+Explanation: 4 is not present in the given array.
+
+Table of Content
+
+[Naive Approach] Using Linear Search - O(n) Time and O(1) Space
+[Expected Approach] Using Binary Search - O(logn) Time and O(1) Space
+[Naive Approach] Using Linear Search - O(n) Time and O(1) Space
+The idea is to traverse the array and for each element, check if it is equal to the target. If it is, increment the counter.
+
+
+
+
+// Java program to find the occurrence of given
+// target using linear search
+​
+class GfG {
+    static int countFreq(int[] arr, int target) {
+        int res = 0;
+        for (int i = 0; i < arr.length; i++) {
+          
+            // If the current element is equal to 
+            // target, increment the result
+            if (arr[i] == target)
+                res++;
+        }
+      
+        return res;
+    }
+​
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 2, 2, 2, 3, 4, 7, 8, 8};
+        int target = 2;
+        System.out.println(countFreq(arr, target));
+    }
+}
+
+Output
+4
+[Expected Approach] Using Binary Search - O(logn) Time and O(1) Space
+Since the array is already sorted, we can use binary search to find the occurrences of a given target.
+First, we find the index of the first occurrence (Lower Bound) of target and then the index of the first element greater than the target (Upper Bound). 
+The difference between these two indices will give the total number of occurrences of the target.
+
+
+
+// Java program to count occurrence of a given target
+// using binary search
+​
+class GfG {
+​
+    // Function to return Lower Bound
+    static int lowerBound(int[] arr, int target) {
+        int res = arr.length;
+        
+        // Search space for binary search
+        int lo = 0, hi = arr.length - 1;
+        
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (arr[mid] >= target) {
+                res = mid;
+                hi = mid - 1;
+            } 
+            else {
+                lo = mid + 1;
+            }
+        }
+        return res;
+    }
+​
+    // Function to return Upper Bound
+    static int upperBound(int[] arr, int target) {
+        int res = arr.length;
+        
+        // Search space for binary search
+        int lo = 0, hi = arr.length - 1;
+        
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (arr[mid] > target) {
+                res = mid;
+                hi = mid - 1;
+            } 
+            else {
+                lo = mid + 1;
+            }
+        }
+        return res;
+    }
+​
+    static int countFreq(int[] arr, int target) {
+      
+        // Return the difference between upper
+        // bound and lower bound of the target
+        return upperBound(arr, target) - 
+                                lowerBound(arr, target);
+    }
+​
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 2, 2, 2, 3, 4, 7, 8, 8};
+        int target = 2;
+        System.out.println(countFreq(arr, target));
+    }
+}
+
+Output
+4
